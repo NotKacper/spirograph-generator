@@ -1,76 +1,43 @@
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
 import java.util.Vector;
 
 public class MathHandler {
-	private float xScalar;
-	private float xOffset;
-	private float yScalar;
-	private float yOffset;
 
-	public MathHandler() {
-		xScalar = 1;
-		yScalar = 1;
-		xOffset = 0;
-		yOffset = 0;
-	}
+  public PointVector findCoordinatesAtParameter(
+      double t, double largeCircleRadius, double smallCircleRadius, double fractionSmallCircle) {
+    double x =
+        ((largeCircleRadius - smallCircleRadius) * cos(t)
+            + fractionSmallCircle
+                * cos(((largeCircleRadius - smallCircleRadius) / smallCircleRadius) * t));
+    double y =
+        (largeCircleRadius - smallCircleRadius) * sin(t)
+            - fractionSmallCircle
+                * sin(((largeCircleRadius - smallCircleRadius) / smallCircleRadius) * t);
+    return new PointVector(x, y);
+  }
 
-	public void setYScalar(float yScalar) {
-		this.yScalar = yScalar;
-	}
+  private Vector<Double> translateToGraphicCoordinates(
+      Vector<Double> coordinates, double height, double width, double xScalar, double yScalar) {
+    Vector<Double> newCoordinates = new Vector<>();
+    newCoordinates.add(width / 2 + xScalar * coordinates.get(0));
+    newCoordinates.add(height / 2 - yScalar * coordinates.get(1));
+    return newCoordinates;
+  }
 
-	public float getXOffset() {
-		return xOffset;
-	}
-
-	public void setXOffset(float xOffset) {
-		this.xOffset = xOffset;
-	}
-
-	public float getXScalar() {
-		return xScalar;
-	}
-
-	public void setXScalar(float xScalar) {
-		this.xScalar = xScalar;
-	}
-
-	public float getYOffset() {
-		return yOffset;
-	}
-
-	public void setYOffset(float yOffset) {
-		this.yOffset = yOffset;
-	}
-
-	public float getYScalar() {
-		return yScalar;
-	}
-
-	/**
-	 *
-	 * @param coordinates The raw value of the coordinates of a point in the x y plane
-	 * @param height The maximum height of the graphics 2D dimensions
-	 * @param width The maximum width of the graphics 2D dimensions
-	 * @return Returns the screen-centred coordinates of a point about (0,0)
-	 */
-	private Vector<Float> translateToGraphicCoordinates(Vector<Float> coordinates, float height, float width) {
-		Vector<Float> newCoordinates = new Vector<>();
-		newCoordinates.add(width / 2 + xScalar * coordinates.get(0));
-		newCoordinates.add(height / 2 - yScalar * coordinates.get(0));
-		return newCoordinates;
-	}
-
-	/**
-	 *
-	 * @param coordinates The raw value of the coordinates of a point in the x y plane
-	 * @param height The maximum height of the graphics 2D dimensions
-	 * @param width The maximum width of the graphics 2D dimensions
-	 * @return Returns the screen-centred coordinates of a point about centre of user's view on plot.
-	 */
-
-	public Vector<Float> get2DGraphicCoordinates(Vector<Float> coordinates, float height, float width) {
-		Vector<Float> newCoordinates = translateToGraphicCoordinates(coordinates, height, width);
-		newCoordinates.set(0, coordinates.get(0) - xOffset);
-		newCoordinates.set(1, coordinates.get(1) - yOffset);
-		return newCoordinates;
-	}
+  public Vector<Double> get2DGraphicCoordinates(
+      Vector<Double> coordinates,
+      double height,
+      double width,
+      double xScalar,
+      double yScalar,
+      double xOffset,
+      double yOffset) {
+    Vector<Double> newCoordinates =
+        translateToGraphicCoordinates(coordinates, height, width, xScalar, yScalar);
+    newCoordinates.set(0, coordinates.get(0) - xOffset);
+    newCoordinates.set(1, coordinates.get(1) - yOffset);
+    return newCoordinates;
+  }
 }
