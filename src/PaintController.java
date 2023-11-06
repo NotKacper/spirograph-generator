@@ -15,8 +15,8 @@ public class PaintController {
     PlotHandler ph = new PlotHandler();
     PointVector nextPoint;
     ctx.beginPath();
-    for (double i = 0; i < 5; i+=0.01) {
-      nextPoint = ph.getNextFrameInfo(i);
+    for (double i = 0; i < 500; i+=1) {
+      nextPoint = ph.getNextFrameInfo(i/10);
       ctx.lineTo(
           nextPoint.getOnScreenCoordinates().get(0), nextPoint.getOnScreenCoordinates().get(1));
       ctx.stroke();

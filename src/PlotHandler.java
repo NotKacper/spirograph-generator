@@ -19,7 +19,7 @@ public class PlotHandler {
   }
 
 	public PointVector getNextFrameInfo(double t) {
-    PointVector pointVector = math.findCoordinatesAtParameter(t, 100, 50, 0.75);
+    PointVector pointVector = math.findCoordinatesAtParameter(t, 100, 50, 300);
     Vector<Double> onScreen = math.get2DGraphicCoordinates(pointVector.getRawCoordinates(), 600, 600, xScalar, yScalar, xOffset, yOffset);
     pointVector.setOnScreenCoordinates(onScreen.get(0), onScreen.get(1));
     parameterToCoordinate.put(t, pointVector);
