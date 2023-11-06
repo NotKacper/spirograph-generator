@@ -3,7 +3,6 @@
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
@@ -14,16 +13,13 @@
         <VBox>
             <MenuBar>
                 <Menu text="Graph">
-                    <MenuItem text="Run" onAction="#onRun"/>
+                    <MenuItem text="Draw weird preset 1" onAction="#onWeirdPreset1"/>
+                    <MenuItem text="Draw weird preset 2" onAction="#onWeirdPreset2"/>
+                    <MenuItem text="Draw weird preset 3" onAction="#onWeirdPreset3"/>
+                    <MenuItem text="Draw preset 1" onAction="#onPreset1"/>
                     <MenuItem text="Exit" onAction="#onExit"/>
                 </Menu>
             </MenuBar>
-
-            <ToolBar>
-                <HBox alignment="CENTER" spacing="5">
-                    <ColorPicker fx:id="colorPicker"/>
-                </HBox>
-            </ToolBar>
         </VBox>
     </top>
 

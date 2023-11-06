@@ -2,9 +2,9 @@ import java.util.Vector;
 
 public class PointVector {
 
-  private Vector<Double> rawCoordinates;
+  private final Vector<Double> rawCoordinates;
 
-  private Vector<Double> onScreenCoordinates;
+  private final Vector<Double> onScreenCoordinates;
 
   /**
    * @param rawX The initial value of the point's X on the Spinograph as found using its parametric

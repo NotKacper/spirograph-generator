@@ -1,45 +1,37 @@
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class PlotHandler {
-  private final HashMap<Double, PointVector> parameterToCoordinate;
+  private final ArrayList<PointVector> pointList;
   private final MathHandler math;
   private double xScalar;
   private double xOffset;
   private double yScalar;
   private double yOffset;
 
-  public PlotHandler() {
-    this.parameterToCoordinate = new HashMap<>();
-    math = new MathHandler();
-    xScalar = 5;
-    yScalar = 5;
-    xOffset = -300;
-    yOffset = -300;
+  public PlotHandler(double radius) {
+    this.pointList = new ArrayList<>();
+    math = new MathHandler(radius);
+    xScalar = 3;
+    yScalar = 3;
+    xOffset = 0;
+    yOffset = 0;
   }
 
-	public PointVector getNextFrameInfo(double t) {
-    PointVector pointVector = math.findCoordinatesAtParameter(t, 100, 50, 300);
-    Vector<Double> onScreen = math.get2DGraphicCoordinates(pointVector.getRawCoordinates(), 600, 600, xScalar, yScalar, xOffset, yOffset);
-    pointVector.setOnScreenCoordinates(onScreen.get(0), onScreen.get(1));
-    parameterToCoordinate.put(t, pointVector);
-    return pointVector;
-	}
-
-  public void setyScalar(double yScalar) {
-    this.yScalar = yScalar;
+  public void clearPoints() {
+    pointList.clear();
   }
 
-  public double getyOffset() {
-    return yOffset;
+  public void setRadius(double radius) {
+    math.setRadius(radius);
   }
 
   public void setyOffset(double yOffset) {
     this.yOffset = yOffset;
   }
 
-  public void setxScalar(double xScalar) {
-    this.xScalar = xScalar;
+  public double getyOffset() {
+    return yOffset;
   }
 
   public double getxOffset() {
@@ -48,6 +40,17 @@ public class PlotHandler {
 
   public void setxOffset(double xOffset) {
     this.xOffset = xOffset;
+  }
+
+  public void getNextFrameInfo(double t, double k, double l) {
+    PointVector pointVector = math.findCoordinatesAtParameter(t, k, l);
+    Vector<Double> onScreen = math.get2DGraphicCoordinates(pointVector.getRawCoordinates(), 600, 600, xScalar, yScalar, xOffset, yOffset);
+    pointVector.setOnScreenCoordinates(onScreen.get(0), onScreen.get(1));
+    pointList.add(pointVector);
+  }
+
+  public ArrayList<PointVector> getPointList() {
+    return pointList;
   }
 }
 
