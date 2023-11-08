@@ -14,75 +14,49 @@ public class PaintController {
   }
 
   public void onPreset1() {
-    drawSpirograph(100, 0.25, 0.75);
+    ctx.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+    //    drawSpirograph(100, 0.25, 0.75);
+    drawSpirograph(100, 0.3, 0.75, 10);
   }
 
   public void onWeirdPreset1() {
-    drawWeirdSpirograph(100, 0.25, 0.75);
+    ctx.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+    drawSpirograph(100, 0.25, 0.75, 1);
   }
 
   public void onWeirdPreset2() {
-    drawWeirdSpirograph(150, 0.5, 0.5);
+    ctx.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+    drawSpirograph(150, 0.5, 0.5, 1);
   }
 
   public void onWeirdPreset3() {
-    drawWeirdSpirograph(200, 0.75, 0.25);
+    ctx.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+    drawSpirograph(200, 0.75, 0.25, 1);
   }
 
   public void onCustom() {
-    drawWeirdSpirograph(100, 0.1, 0.2);
-  }
-
-  private void drawWeirdSpirograph(double radius, double k, double l) {
-    double originX = canvas.getWidth() / 2;
-    double originY = canvas.getHeight() / 2;
-    ctx.clearRect(0, 0, originX * 2, originY * 2);
-    plotHandler.setRadius(radius);
-    plotHandler.clearPoints();
-    double[] previousPosition = new double[2];
-    for (double t = 0; t < 1000; t++) {
-      ctx.clearRect(0, 0, originX * 2, originY * 2);
-      ctx.beginPath();
-      previousPosition[0] = originX;
-      previousPosition[1] = originY;
-      ctx.moveTo(originX, originY);
-      for (PointVector pv : plotHandler.getPointList()) {
-        ctx.strokeLine(
-            previousPosition[0],
-            previousPosition[1],
-            pv.getOnScreenCoordinates().get(0),
-            pv.getOnScreenCoordinates().get(1));
-        previousPosition[0] = pv.getOnScreenCoordinates().get(0);
-        previousPosition[1] = pv.getOnScreenCoordinates().get(1);
-      }
-      plotHandler.getNextFrameInfo(t, k, l);
-      t++;
-      ctx.closePath();
-    }
+    ctx.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+    drawSpirograph(100, 0.1, 0.2, 1);
   }
 
   // make this draw multiple spirographs, and make a custom spirograph method.
-  private void drawSpirograph(double radius, double k, double l) {
-    double originX = canvas.getWidth() / 2;
-    double originY = canvas.getHeight() / 2;
-    ctx.clearRect(0, 0, originX * 2, originY * 2);
+  private void drawSpirograph(double radius, double k, double l, int divisor) {
     plotHandler.setRadius(radius);
     plotHandler.clearPoints();
     double[] previousPosition = new double[2];
-    for (double t = 0; t < 1000; t++) {
-      ctx.clearRect(0, 0, originX * 2, originY * 2);
-      ctx.beginPath();
-      previousPosition[0] = originX;
-      previousPosition[1] = originY;
-      ctx.moveTo(originX, originY);
-      for (PointVector pv : plotHandler.getPointList()) {
-        ctx.fillOval(pv.getOnScreenCoordinates().get(0), pv.getOnScreenCoordinates().get(1), 1, 1);
-        previousPosition[0] = pv.getOnScreenCoordinates().get(0);
-        previousPosition[1] = pv.getOnScreenCoordinates().get(1);
-      }
-      plotHandler.getNextFrameInfo(t, k, l);
+    plotHandler.getNextFrameInfo(0, k, l);
+    previousPosition[0] = plotHandler.getPointList().getLast().getOnScreenCoordinates().get(0);
+    previousPosition[1] = plotHandler.getPointList().getLast().getOnScreenCoordinates().get(1);
+    for (double t = 0; t < 1000*divisor; t++) {
+      plotHandler.getNextFrameInfo(t/divisor, k, l);
+      ctx.strokeLine(
+          previousPosition[0],
+          previousPosition[1],
+          plotHandler.getPointList().getLast().getOnScreenCoordinates().get(0),
+          plotHandler.getPointList().getLast().getOnScreenCoordinates().get(1));
+      previousPosition[0] = plotHandler.getPointList().getLast().getOnScreenCoordinates().get(0);
+      previousPosition[1] = plotHandler.getPointList().getLast().getOnScreenCoordinates().get(1);
       t++;
-      ctx.closePath();
     }
   }
 
